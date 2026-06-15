@@ -1,0 +1,227 @@
+[
+    {
+        "id": "4bfcea216fe76262",
+        "type": "tab",
+        "label": "Carelevel",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ade366dc987f22dc",
+        "type": "mqtt in",
+        "z": "4bfcea216fe76262",
+        "name": "BPM",
+        "topic": "carelevel/saude/bpm",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "mqtt-broker-hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 270,
+        "y": 400,
+        "wires": [
+            [
+                "e61b71db6dfc3d1c"
+            ]
+        ]
+    },
+    {
+        "id": "5935e975e589d04d",
+        "type": "mqtt in",
+        "z": "4bfcea216fe76262",
+        "name": "SpO2",
+        "topic": "carelevel/saude/spo2",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "mqtt-broker-hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 270,
+        "y": 460,
+        "wires": [
+            [
+                "e61b71db6dfc3d1c"
+            ]
+        ]
+    },
+    {
+        "id": "dcf836c6361b101b",
+        "type": "mqtt in",
+        "z": "4bfcea216fe76262",
+        "name": "Temperatura",
+        "topic": "carelevel/saude/temperatura",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "mqtt-broker-hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 290,
+        "y": 520,
+        "wires": [
+            [
+                "e61b71db6dfc3d1c"
+            ]
+        ]
+    },
+    {
+        "id": "85965a9b0bd9705f",
+        "type": "mqtt in",
+        "z": "4bfcea216fe76262",
+        "name": "Temp Válida",
+        "topic": "carelevel/saude/temp_valida",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "mqtt-broker-hivemq",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 290,
+        "y": 580,
+        "wires": [
+            [
+                "e61b71db6dfc3d1c"
+            ]
+        ]
+    },
+    {
+        "id": "e61b71db6dfc3d1c",
+        "type": "json",
+        "z": "4bfcea216fe76262",
+        "name": "Parse JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 570,
+        "y": 460,
+        "wires": [
+            [
+                "cc0e06a13308cfde",
+                "b5888ebe6d09e8b8"
+            ]
+        ]
+    },
+    {
+        "id": "cc0e06a13308cfde",
+        "type": "function",
+        "z": "4bfcea216fe76262",
+        "name": "Formata → InfluxDB Cloud",
+        "func": "const p = msg.payload;\nlet fields = {};\n\nif      (p.bpm !== undefined)         { fields.bpm = parseFloat(p.bpm); }\nelse if (p.spo2 !== undefined)        { fields.spo2 = parseFloat(p.spo2); }\nelse if (p.temperatura !== undefined) { fields.temperatura = parseFloat(p.temperatura); }\nelse if (p.temp_valida !== undefined) { fields.temp_valida = p.temp_valida ? 1 : 0; }\nelse { node.warn('Payload desconhecido: ' + JSON.stringify(p)); return null; }\n\nmsg.measurement = 'saude';\nmsg.payload = fields;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 460,
+        "wires": [
+            [
+                "a5dcbe1b5f98c17f"
+            ]
+        ]
+    },
+    {
+        "id": "b5888ebe6d09e8b8",
+        "type": "debug",
+        "z": "4bfcea216fe76262",
+        "name": "Debug Payloads",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "a5dcbe1b5f98c17f",
+        "type": "influxdb out",
+        "z": "4bfcea216fe76262",
+        "influxdb": "influx-config",
+        "name": "Salvar no InfluxDB Cloud",
+        "measurement": "",
+        "precision": "ms",
+        "retentionPolicy": "",
+        "database": "",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "5d9cd782e6ca7997",
+        "bucket": "carelevel_db",
+        "x": 1130,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "mqtt-broker-hivemq",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Cloud",
+        "broker": "2f9aceebe7a246b1b1bb52306aa12c22.s1.eu.hivemq.cloud",
+        "port": "8883",
+        "tls": "tls-hivemq",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": true,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "influx-config",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "carelevel_db",
+        "name": "InfluxDB Cloud",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": "",
+        "rejectUnauthorized": false
+    },
+    {
+        "id": "tls-hivemq",
+        "type": "tls-config",
+        "name": "HiveMQ TLS",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    },
+    {
+        "id": "9dad3d5c4bdf591a",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
