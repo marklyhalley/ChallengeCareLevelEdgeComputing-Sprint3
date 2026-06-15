@@ -10,13 +10,14 @@ Sistema de monitoramento contínuo de sinais vitais (frequência cardíaca, satu
 - **Curso / Disciplina:** Engenharia de Software
 - **Turma / Fase / Sprint:** 1ESPS 2º Semestre - Sprint 3
 - **Integrantes:**
-| Nome | RM |
-|---|---|
-| Camile Vitória Silva | RM 566649 |
-| Gustavo Almeida Ferreira | RM 566980 |
-| Lucas de Oliveira Miranda Caetano | RM 568036 |
-| Marco Túlio Longo Conte | RM 568373 |
-| Sofia Souza Rodrigues | RM 566708 |
+
+    | Nome | RM |
+    |---|---|
+    | Camile Vitória Silva | RM 566649 |
+    | Gustavo Almeida Ferreira | RM 566980 |
+    | Lucas de Oliveira Miranda Caetano | RM 568036 |
+    | Marco Túlio Longo Conte | RM 568373 |
+    | Sofia Souza Rodrigues | RM 566708 |
 
 ---
 
