@@ -224,4 +224,4 @@ Recomendações:
 
 ## 📄 Projeto Acadêmico
 
-Projeto desenvolvido para a Global Solution 2026 – FIAP
+Projeto desenvolvido para o Challenge CarePlus – FIAP
